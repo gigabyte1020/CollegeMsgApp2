@@ -19,9 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class RegisterActivity extends AppCompatActivity {
     private Button RegButton;
-    private EditText email,password;
+    private EditText email,password,rol;
     private TextView loglink;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
@@ -51,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void CreateNewAccount() {
         String em=email.getText().toString();
         String pw=password.getText().toString();
+        String roles=rol.getText().toString();
         if (TextUtils.isEmpty(em))
         {
             Toast.makeText(this, "Enter Email", Toast.LENGTH_SHORT).show();
@@ -67,7 +70,9 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful())
                     {
                         String currentUserID=mAuth.getCurrentUser().getUid();
-                        RootRef.child("Users").child(currentUserID).setValue("");
+
+
+                        RootRef.child("Users").child(currentUserID).setValue(roles);
                         SendUsertoMain();
                         Toast.makeText(RegisterActivity.this, "Enter Email", Toast.LENGTH_SHORT).show();
                     }
@@ -95,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
         RegButton = (Button) findViewById(R.id.register_button);
         email= (EditText) findViewById(R.id.register_email);
         password= (EditText) findViewById(R.id.register_password);
+        rol= (EditText) findViewById(R.id.roles);
         loglink = (TextView) findViewById(R.id.login_link);
     }
 }

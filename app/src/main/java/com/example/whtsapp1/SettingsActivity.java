@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -34,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity
     private Button UpButton;
     private EditText uName, uStatus;
     private CircleImageView uImage;
-    private String currentUserID;
+    private String currentUserID,downloadUrl,str;
 
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
@@ -77,16 +80,17 @@ public class SettingsActivity extends AppCompatActivity
                         {
                             String retrieveuName=snapshot.child("name").getValue().toString();
                             String retrieveuStatus=snapshot.child("status").getValue().toString();
-                            String retrieveuImg=snapshot.child("image").getValue().toString();
+                            String retrieveuImg=snapshot.child("image").getValue().toString(); //url stored here is wrong
 
                             uName.setText(retrieveuName);
                             uStatus.setText(retrieveuStatus);
+                            Picasso.get().load(retrieveuImg).into(uImage);
 
                         }
                         else if((snapshot.exists()) &&(snapshot.hasChild("name")))
                         {
                             String retrieveuName=snapshot.child("name").getValue().toString();
-                            String retrieveuImg=snapshot.child("image").getValue().toString();
+//                            String retrieveuImg=snapshot.child("image").getValue().toString();
 
                             uName.setText(retrieveuName);
 
@@ -119,12 +123,25 @@ public class SettingsActivity extends AppCompatActivity
         if(requestCode==GalleryPick && resultCode==RESULT_OK &&data!=null){
             Uri ImageUri = data.getData();
             StorageReference filepath = UserImgRef.child(currentUserID + ".jpg");
+
+
+            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+            {
+                @Override
+                public void onSuccess(Uri downU)
+                {
+                    str = downU.toString();
+                }
+            });
             filepath.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(SettingsActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                        final String downloadUrl= task.getResult().getMetadata().getContentDisposition().toString();
+
+                        final String downloadUrl= str;
+
+
                         RootRef.child("Users").child(currentUserID).child("image")
                                 .setValue(downloadUrl)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -133,6 +150,7 @@ public class SettingsActivity extends AppCompatActivity
                                         if (task.isSuccessful())
                                         {
                                             Toast.makeText(SettingsActivity.this, "Image saved in db", Toast.LENGTH_SHORT).show();
+
                                         }
                                         else{
                                             Toast.makeText(SettingsActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();

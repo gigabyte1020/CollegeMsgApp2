@@ -91,7 +91,7 @@ public class GroupsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 String currentGroupName = adapterView.getItemAtPosition(pos).toString();
                 Intent groupIntent = new Intent(getContext(),GroupChatActivity.class);
-                groupIntent.putExtra("groupName",currentGroupName);
+                groupIntent.putExtra("groupname",currentGroupName);
                 startActivity(groupIntent);
             }
         });
