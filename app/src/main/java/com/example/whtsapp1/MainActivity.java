@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void CreateNewGroup(String groupName) {
-        RootRef.child("Groups").child(groupName).setValue("")
+        RootRef.child("Groups1").child(groupName).setValue("")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

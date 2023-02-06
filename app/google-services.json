@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "157060799098",
-    "project_id": "whtsapp1-51d35",
-    "storage_bucket": "whtsapp1-51d35.appspot.com"
+    "project_number": "261434001084",
+    "project_id": "collegeapp-1e480",
+    "storage_bucket": "collegeapp-1e480.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:157060799098:android:1c3b0a1dc578c220b039c3",
+        "mobilesdk_app_id": "1:261434001084:android:7e946961fac680533972b9",
         "android_client_info": {
           "package_name": "com.example.whtsapp1"
         }
       },
       "oauth_client": [
         {
-          "client_id": "157060799098-e1rhdejvujcth0pphr5uu12gstdu8d03.apps.googleusercontent.com",
+          "client_id": "261434001084-faqdinr4lt62buriig16ild0522q97il.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyABDzTh_38utCdMhBEek8PQFNJewLHbwyU"
+          "current_key": "AIzaSyDks1X4ksJE8u1NXndn0bcNkCFvdFTLgDA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "157060799098-e1rhdejvujcth0pphr5uu12gstdu8d03.apps.googleusercontent.com",
+              "client_id": "261434001084-faqdinr4lt62buriig16ild0522q97il.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -21,7 +21,7 @@
         android:layout_below="@+id/register_image"
         android:hint="Email"
         android:padding="5dp"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:background="@drawable/inputs"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
@@ -47,7 +47,7 @@
         android:layout_below="@+id/register_password"
         android:hint="student/teacher"
         android:padding="5dp"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:background="@drawable/inputs"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
@@ -70,4 +70,13 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:text="Login"></TextView>
+    <Button
+        android:id="@+id/scan_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginEnd="15dp"
+        android:text="Scan"></Button>
 </RelativeLayout>
