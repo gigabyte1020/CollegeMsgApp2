@@ -57,16 +57,11 @@ public class LoginActivity extends AppCompatActivity {
                 UserLogin();
             }
         });
-        scanlink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ScanUser();
-            }
-        });
+
+        scanlink.setOnClickListener(view -> CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(this));
     }
     private void ScanUser() {
 
-        scanlink.setOnClickListener(view -> CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(this));
 
     }
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

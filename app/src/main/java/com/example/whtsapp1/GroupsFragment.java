@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,11 +43,15 @@ public class GroupsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String currentUserID,retrieveuClass="";
     private View groupView;
     private ListView list_view;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list_of= new ArrayList<>();
     private DatabaseReference GroupRef;
+    private FirebaseAuth mAuth;
+    private DatabaseReference RootRef;
+    private StorageReference UserImgRef;
     public GroupsFragment() {
         // Required empty public constructor
     }
@@ -80,11 +88,15 @@ public class GroupsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         groupView = inflater.inflate(R.layout.fragment_groups, container, false);
+        RootRef= FirebaseDatabase.getInstance().getReference();
+
         GroupRef= FirebaseDatabase.getInstance().getReference().child("Groups1");
-
+        mAuth=FirebaseAuth.getInstance();
+       UserImgRef = FirebaseStorage.getInstance().getReference().child("ProfImg");
+        currentUserID=mAuth.getCurrentUser().getUid();
         Initialize();
+        RetrieveUserInfo();
 
-        RetrieveGroups();
 
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,6 +110,22 @@ public class GroupsFragment extends Fragment {
         return groupView;
         
 
+    }private void RetrieveUserInfo() {
+        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if((snapshot.exists())) {
+                    retrieveuClass = snapshot.child("class").getValue().toString();
+                    RetrieveGroups();
+                }
+                }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
  //Reads and gets groups from database
     private void RetrieveGroups() {
@@ -108,7 +136,12 @@ public class GroupsFragment extends Fragment {
                 Iterator iterator = snapshot.getChildren().iterator();
                 while(iterator.hasNext())
                 {
-                    set.add(((DataSnapshot)iterator.next()).getKey()); //Gets names
+                    String gr1 =  ((DataSnapshot)iterator.next()).getKey();
+//                    Log.d("Status",retrieveuClass);
+                  //  Log.d("GroupName",gr1);
+                    if (gr1.equals(retrieveuClass)) {
+                        set.add(gr1); //Gets names
+                    }
                 }
                 list_of.clear();
                 list_of.addAll(set);

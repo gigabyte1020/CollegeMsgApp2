@@ -55,6 +55,7 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     private Button RegButton,scanlink;
+
     private EditText email,password,rol;
     private TextView loglink;
     private FirebaseAuth mAuth;
@@ -179,7 +180,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
             }
-        }}
+        }
+    }
 
 
     private void CreateNewAccount() {

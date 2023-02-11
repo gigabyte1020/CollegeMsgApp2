@@ -79,7 +79,7 @@ public class SettingsActivity extends AppCompatActivity
                         if((snapshot.exists()) &&(snapshot.hasChild("name"))&&snapshot.hasChild("image"))
                         {
                             String retrieveuName=snapshot.child("name").getValue().toString();
-                            String retrieveuStatus=snapshot.child("status").getValue().toString();
+                            String retrieveuStatus=snapshot.child("class").getValue().toString();
                             String retrieveuImg=snapshot.child("image").getValue().toString(); //url stored here is wrong
 
                             uName.setText(retrieveuName);
@@ -183,7 +183,7 @@ public class SettingsActivity extends AppCompatActivity
             HashMap<String,String> profileMap=new HashMap<>();
             profileMap.put("uid",currentUserID);
             profileMap.put("name",setUName);
-            profileMap.put("status",setUStatus);
+            profileMap.put("class",setUStatus);
             RootRef.child("Users").child(currentUserID).setValue(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
