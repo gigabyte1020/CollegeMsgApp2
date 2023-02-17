@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (currentUser==null)
         {
-            SendUsertoLogin();
+            SendUsertoFirst();
         }
         else{
             VerifyUserExist();
@@ -100,12 +100,25 @@ public class MainActivity extends AppCompatActivity {
         startActivity(loginIntent);
         finish();
     }
+    private void SendUsertoFirst() {
+        Intent loginIntent=new Intent(MainActivity.this,FirstScreen.class);
+
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+        finish();
+    }
     private void SendUsertoSettings() {
         Intent settingsIntent=new Intent(MainActivity.this,SettingsActivity.class);
 
         settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(settingsIntent);
         finish();
+    }
+    private void SendUsertoNotice() {
+        Intent noticeIntent=new Intent(MainActivity.this,SendNotice.class);
+
+        noticeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(noticeIntent);
     }
 
     @Override
@@ -127,9 +140,9 @@ public class MainActivity extends AppCompatActivity {
         {
             SendUsertoSettings();
         }
-        else if (item.getItemId()==R.id.main_find_friends)
+        else if (item.getItemId()==R.id.sendnotice)
         {
-
+            SendUsertoNotice();
         }
         else if (item.getItemId()==R.id.main_create_group)
         {

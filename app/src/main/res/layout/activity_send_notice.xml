@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/noticeTitle"
+        android:layout_width="217dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/inputs"
+        android:hint="Title"
+        android:inputType="text"
+        android:padding="5dp" />
+
+    <EditText
+        android:id="@+id/noticeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noticeTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/inputs"
+        android:hint="Body"
+        android:inputType="textMultiLine"
+        android:padding="5dp" />
+    <Button
+        android:id="@+id/noticesendMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:layout_below="@+id/noticeText"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"/>
+
+    <TextView
+        android:id="@+id/classes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:drawable/editbox_background"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:drawablePadding="16dp"
+        android:hint="Select Classes"
+        android:padding="12dp" />
+    <TextView
+        android:id="@+id/show_selected_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="128dp"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/pick_date_button"
+        android:text="Selected Date is : "
+        android:textSize="18sp" />
+
+    <!--button to open the material design date picker dialog-->
+    <TextView
+        android:id="@+id/uridisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/send_files_btn"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="28dp"
+        android:text="File Uri: "
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/pick_date_button"
+
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/classes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:text="Select Date"
+        android:textSize="18sp" />
+    <ImageButton
+        android:id="@+id/send_files_btn"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/classes"
+        android:layout_marginTop="56dp"
+        android:backgroundTint="@android:color/white"
+        android:src="@drawable/send_files"></ImageButton>
+
+
+
+
+</RelativeLayout>

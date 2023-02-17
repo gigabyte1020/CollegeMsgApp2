@@ -142,6 +142,9 @@ public class GroupsFragment extends Fragment {
                     if (gr1.equals(retrieveuClass)) {
                         set.add(gr1); //Gets names
                     }
+                    else{
+                    }
+
                 }
                 list_of.clear();
                 list_of.addAll(set);

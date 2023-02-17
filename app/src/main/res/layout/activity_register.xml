@@ -5,20 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
-    <ImageView
-        android:id="@+id/register_image"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:src="@drawable/signup_photo"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitCenter" />
+    <view
+        android:id="@+id/previewView"
+        class="androidx.camera.view.PreviewView"
+        android:layout_width="250dp"
+        android:layout_height="350dp" />
+    <Button
+        android:id="@+id/bCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/previewView"
+        android:text="Capture"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp" />
     <EditText
         android:id="@+id/register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/register_image"
+        android:layout_below="@+id/bCapture"
         android:hint="Email"
         android:padding="5dp"
         android:inputType="text"

@@ -75,7 +75,7 @@ public class RegisterActivity2 extends AppCompatActivity {
                         Toast.makeText(RegisterActivity2.this, "Enter Email", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(RegisterActivity2.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity2.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

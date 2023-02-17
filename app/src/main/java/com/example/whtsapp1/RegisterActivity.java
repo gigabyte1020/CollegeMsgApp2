@@ -3,18 +3,23 @@ package com.example.whtsapp1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whtsapp1.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +43,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageProxy;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -49,18 +60,31 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.HashMap;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private Button RegButton,scanlink;
-
+    private Toast mToast = null;
     private EditText email,password,rol;
     private TextView loglink;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
     private ActivityMainBinding binding;
+
+    String adno = "";
+
+    String dob = "";
+    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    PreviewView previewView;
+
+    Button bTakePicture;
+    private ImageCapture imageCapture;
     private static final int REQUEST_CAMERA_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,44 +100,104 @@ public class RegisterActivity extends AppCompatActivity {
                 SendUsertoLog();
             }
         });
-        scanlink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ScanUser();
-            }
-        });
+
         RegButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CreateNewAccount();
             }
         });
-    }
-
-    private void ScanUser() {
-
-        scanlink.setOnClickListener(view -> CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(this));
-
-    }
 
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri uri = (result != null) ? result.getUri() : null;
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    getTextFromImage(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+        bTakePicture = findViewById(R.id.bCapture);
+        previewView = findViewById(R.id.previewView);
+
+        bTakePicture.setOnClickListener(this);
+
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+        cameraProviderFuture.addListener(() -> {
+            try {
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                startCameraX(cameraProvider);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }
+
+        }, getExecutor());
+
     }
 
-    @SuppressLint("SetTextI18n")
+
+    private Executor getExecutor() {
+        return ContextCompat.getMainExecutor(this);
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void startCameraX(ProcessCameraProvider cameraProvider) {
+
+        cameraProvider.unbindAll();
+
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
+
+        Preview preview = new Preview.Builder().build();
+
+        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+
+        imageCapture = new ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+
+                .build();
+
+
+        cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
+    }
+
+    private void capturePhoto() {
+        long timeStamp = System.currentTimeMillis();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, timeStamp);
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+
+
+        imageCapture.takePicture(Executors.newSingleThreadExecutor(), new ImageCapture.OnImageCapturedCallback() {
+            @Override
+            public void onCaptureSuccess(@NonNull ImageProxy image) {
+                super.onCaptureSuccess(image);
+                Bitmap bmap = imageProxyToBitmap(image);
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        getTextFromImage(bmap);
+
+                    }
+                });
+            }
+        });
+
+    }
+    private Bitmap imageProxyToBitmap(ImageProxy image) {
+        ImageProxy.PlaneProxy planeProxy = image.getPlanes()[0];
+        ByteBuffer buffer = planeProxy.getBuffer();
+        byte[] bytes = new byte[buffer.remaining()];
+        buffer.get(bytes);
+
+        Bitmap bm= BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        return rotateImage(bm,90);
+    }
+    private static Bitmap rotateImage(Bitmap img, int degree)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
     private void getTextFromImage(Bitmap bitmap) {
         TextRecognizer recognizer = new TextRecognizer.Builder(this).build();
         if (!recognizer.isOperational()) {
@@ -127,8 +211,6 @@ public class RegisterActivity extends AppCompatActivity {
             String blocks = "";
             String lines = "";
             String words = "";
-            String adno = "";
-            String dob = "";
             String chck="Number:";
             int i=0;
             for (int index = 0; index < textBlocks.size(); index++)
@@ -144,20 +226,24 @@ public class RegisterActivity extends AppCompatActivity {
                         //extract scanned text words here
                         words = element.getValue();
 
-                      //  Log.d("MainActivity",words);
+                        //  Log.d("MainActivity",words);
                         if(words .equals(chck)) {
                             i=1;
                             continue;
                         }
                         if(i==1){
-                            Toast.makeText(this, words, Toast.LENGTH_SHORT).show();
-                            adno=words;
-                            email.setText(adno +"@ncas.in");
 
-                         //   stringBuilder.append(words +"\n");
+                            adno=(words+"@ncas.in");
+                            Toast.makeText(this, adno, Toast.LENGTH_SHORT).show();
+                            //   stringBuilder.append(words +"\n");
 
                             i=0;
                         }
+                        else{
+//                            Toast.makeText(this, "Did not read adno", Toast.LENGTH_SHORT).show();
+                        }
+
+
 
                         //    REGEX to find date
 //                        final String regex = "\\d{2}-\\w{3}-\\d{2}";
@@ -168,37 +254,41 @@ public class RegisterActivity extends AppCompatActivity {
                         final Matcher matcher = pattern.matcher(string);
 
                         while (matcher.find()) {
-
+                            words = words.replaceAll("[^0-9+]", "");
                             Toast.makeText(this, words, Toast.LENGTH_SHORT).show();
                             dob=words;
-                            password.setText(dob);
-                            rol.setText("student");
-                         //   stringBuilder.append(words +"\n");
+                            //   stringBuilder.append(words +"\n");
+                        }
+                        if(adno !="" && dob!="")
+                        {
+                            CreateNewAccount();
                         }
                         //End of REGEX
                     }
                 }
 
             }
+            if(adno =="" )
+            {
+                Toast.makeText(this, "Did not read adno", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
 
     private void CreateNewAccount() {
-        String em=email.getText().toString();
-        String pw=password.getText().toString();
-        String roles=rol.getText().toString();
-        if (TextUtils.isEmpty(em))
+        String roles ="student";
+        if (TextUtils.isEmpty(adno))
         {
             Toast.makeText(this, "Enter Email", Toast.LENGTH_SHORT).show();
         }
-        if (TextUtils.isEmpty(pw))
+        if (TextUtils.isEmpty(dob))
         {
             Toast.makeText(this, "Enter Password", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            mAuth.createUserWithEmailAndPassword(em,pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(adno,dob).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful())
@@ -208,10 +298,15 @@ public class RegisterActivity extends AppCompatActivity {
 
                         RootRef.child("Users").child(currentUserID).setValue(roles);
                         SendUsertoMain();
-                        Toast.makeText(RegisterActivity.this, "Enter Email", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Registration Success", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(RegisterActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        mToast=Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT);
+                        mToast.show();
+                        if(mToast!=null){
+//                        mToast.cancel();
+                        }
+
                     }
                 }
             });
@@ -236,6 +331,18 @@ public class RegisterActivity extends AppCompatActivity {
         password= (EditText) findViewById(R.id.register_password);
         rol= (EditText) findViewById(R.id.roles);
         loglink = (TextView) findViewById(R.id.login_link);
-        scanlink = (Button) findViewById(R.id.scan_link);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+
+            case R.id.bCapture: {
+                capturePhoto();
+                break;
+            }
+
+        }
     }
 }
