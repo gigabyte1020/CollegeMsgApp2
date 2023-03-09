@@ -3,7 +3,6 @@ package com.example.whtsapp1;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -20,8 +19,8 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
         switch (i)
         {
             case 0:
-                ChatsFragment chatsFragment = new ChatsFragment();
-                return chatsFragment;
+                NoticeFragment noticeFragment = new NoticeFragment();
+                return noticeFragment;
             case 1:
                 GroupsFragment groupsFragment = new GroupsFragment();
                 return groupsFragment;

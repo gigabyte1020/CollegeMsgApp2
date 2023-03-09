@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -56,6 +58,7 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -278,6 +281,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void CreateNewAccount() {
         String roles ="student";
+        RootRef.child("Students").child(adno).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String currentUserID=mAuth.getCurrentUser().getUid();
+
+
+                RootRef.child("Users").child(currentUserID).setValue(roles);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         if (TextUtils.isEmpty(adno))
         {
             Toast.makeText(this, "Enter Email", Toast.LENGTH_SHORT).show();

@@ -56,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
 
         myTabLayout=(TabLayout) findViewById(R.id.main_tabs);
         myTabLayout.setupWithViewPager(myViewPager);
+        getLatestMessage();
+    }
+
+    private void getLatestMessage() {
+        String programme="BCA";
+
     }
 
     @Override

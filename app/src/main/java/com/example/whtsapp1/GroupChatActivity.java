@@ -5,16 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -69,7 +73,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private String checker="",myUrl="";
     private StorageTask uploadTask;
     private Uri fileuri;
-
+    private static final String CHANNEL_ID = "channelid1";
     private String currentGroupName,currentUserName,currentUserID,currentDate,currentTime;
     private DatabaseReference RootRef,GroupNameRef,GroupMessageRefKey;
     private ProgressDialog loadingBar;
@@ -84,6 +88,12 @@ public class GroupChatActivity extends AppCompatActivity {
 
         currentGroupName=getIntent().getExtras().get("groupname").toString();
         currentUserID=mauth.getCurrentUser().getUid();
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("My notification")
+                .setContentText("New Message in "+ currentGroupName)
+
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         messageRecieverId=getIntent().getExtras().get("groupname").toString();
         getMessageRecievername=getIntent().getExtras().get("groupname").toString();
@@ -121,7 +131,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
         SimpleDateFormat currentTime=new SimpleDateFormat("hh:mm a");
         savecurrentTime=currentTime.format(calendar.getTime());
-
+        createNotificationChannel();
 
         username.setText(getMessageRecievername);
 //        Picasso.get().load(messagereceiverimage).placeholder(R.drawable.profile_image).into(userprofile);
@@ -184,6 +194,25 @@ public class GroupChatActivity extends AppCompatActivity {
                 messagesList.add(messages);
                 messageAdapter.notifyDataSetChanged();
                 usermessagerecyclerview.smoothScrollToPosition(usermessagerecyclerview.getAdapter().getItemCount());
+
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    CharSequence name = "Chann Name";
+                    String description = "Chann Desc";
+                    int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                    NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+                    channel.setDescription(description);
+                    // Register the channel with the system. You can't change the importance
+                    // or other notification behaviors after this.
+                    NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                    notificationManager.createNotificationChannel(channel);
+                      notificationManager.notify(1, builder.build());
+
+
+
+                }
+
             }
 
             @Override
@@ -207,7 +236,22 @@ public class GroupChatActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is not in the Support Library.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Chann Name";
+            String description = "Chann Desc";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system. You can't change the importance
+            // or other notification behaviors after this.
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+          //  notificationManager.notify(1, builder.build());
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

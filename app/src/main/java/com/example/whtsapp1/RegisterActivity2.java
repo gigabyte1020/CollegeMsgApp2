@@ -30,7 +30,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register2);
         InitializeFields();
         mAuth=FirebaseAuth.getInstance();
         RootRef= FirebaseDatabase.getInstance().getReference();

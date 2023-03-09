@@ -77,19 +77,27 @@ public class SendNotice extends AppCompatActivity {
                         materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
                     }
                 });
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
+            @Override public void onPositiveButtonClick(Pair<Long,Long> selection) {
+                Long startDate = selection.first;
+                Long endDate = selection.second;
+                dateText=startDate.toString();
+                //Do something...
+            }
+        });
 
-        materialDatePicker.addOnPositiveButtonClickListener(
-                new MaterialPickerOnPositiveButtonClickListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onPositiveButtonClick(Object selection) {
-
-                        mShowSelectedDateText.setText("Selected Date is : " + materialDatePicker.getHeaderText());
-                        dateText=materialDatePicker.getHeaderText();
-
-
-                    }
-                });
+//        materialDatePicker.addOnPositiveButtonClickListener(
+//                new MaterialPickerOnPositiveButtonClickListener() {
+//                    @SuppressLint("SetTextI18n")
+//                    @Override
+//                    public void onPositiveButtonClick(Object selection) {
+//
+//                        mShowSelectedDateText.setText("Selected Date is : " + materialDatePicker.getHeaderText());
+//                        dateText=materialDatePicker.getHeaderText();
+//
+//
+//                    }
+//                });
         Msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
