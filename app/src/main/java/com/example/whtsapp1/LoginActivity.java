@@ -76,12 +76,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 SendUsertoReg();
             }
         });
-        LoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserLogin();
-            }
-        });
+//        LoginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                UserLogin();
+//            }
+//        });
 
 
 

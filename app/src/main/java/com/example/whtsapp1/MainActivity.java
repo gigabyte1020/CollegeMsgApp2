@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
     private
     androidx.appcompat.widget.Toolbar mToolBar;
-
+    String role="";
 
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
@@ -49,20 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
         mToolBar=(androidx.appcompat.widget.Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolBar);
-        getSupportActionBar().setTitle("WhtsApp");
+        getSupportActionBar().setTitle("EduShare");
         myViewPager=(ViewPager) findViewById(R.id.main_tabs_pager);
         myTabsAccessorAdapter=new TabsAccessorAdapter(getSupportFragmentManager());
         myViewPager.setAdapter(myTabsAccessorAdapter);
 
         myTabLayout=(TabLayout) findViewById(R.id.main_tabs);
         myTabLayout.setupWithViewPager(myViewPager);
-        getLatestMessage();
+        //getLatestMessage();
     }
 
-    private void getLatestMessage() {
-        String programme="BCA";
 
-    }
 
     @Override
     protected void onStart() {
@@ -83,8 +80,9 @@ public class MainActivity extends AppCompatActivity {
         RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child("name").exists()){ //Checks if user already has a username by retrieving from database key "name"
-                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                role = snapshot.child("role").getValue().toString();
+                if(snapshot.child("name").exists()) { //Checks if user already has a username by retrieving from database key "name"
+                    //   Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
 
                 }
                 else {
@@ -118,10 +116,16 @@ public class MainActivity extends AppCompatActivity {
 
         settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(settingsIntent);
-        finish();
+       // finish();
     }
     private void SendUsertoNotice() {
         Intent noticeIntent=new Intent(MainActivity.this,SendNotice.class);
+
+       // noticeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(noticeIntent);
+    }
+    private void SendUsertoQuestion() {
+        Intent noticeIntent=new Intent(MainActivity.this,SendQuestion.class);
 
         noticeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(noticeIntent);
@@ -150,11 +154,15 @@ public class MainActivity extends AppCompatActivity {
         {
             SendUsertoNotice();
         }
-        else if (item.getItemId()==R.id.main_create_group)
-        {
-            RequestNewGroup();
 
-        }
+
+        return true;
+    }
+    public boolean onPrepareOptionsMenu (Menu menu) {
+            if(role!="teacher"){
+            menu.getItem(0).setEnabled(false);
+            }
+
         return true;
     }
 

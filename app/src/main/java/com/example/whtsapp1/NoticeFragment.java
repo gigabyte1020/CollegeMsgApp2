@@ -120,7 +120,7 @@ public class NoticeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if((snapshot.exists())) {
-                    retrieveuClass = snapshot.child("class").getValue().toString();
+                   // retrieveuClass = snapshot.child("class").getValue().toString();
 
                 }
             }

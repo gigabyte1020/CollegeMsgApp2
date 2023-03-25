@@ -37,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity
     private Button UpButton;
     private EditText uName, uStatus;
     private CircleImageView uImage;
-    private String currentUserID,downloadUrl,str;
+    private String currentUserID,downloadUrl,str,currole;
 
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
@@ -52,11 +52,12 @@ public class SettingsActivity extends AppCompatActivity
         mAuth=FirebaseAuth.getInstance();
         RootRef= FirebaseDatabase.getInstance().getReference();
         UserImgRef = FirebaseStorage.getInstance().getReference().child("ProfImg");
+        GetStudentInfo();
         currentUserID=mAuth.getCurrentUser().getUid();
         UpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UpdateSettings();
+                SendUsertoMain();
             }
         });
         RetrieveUserInfo();
@@ -71,20 +72,35 @@ public class SettingsActivity extends AppCompatActivity
         });
     }
 
+    private void GetStudentInfo() {
+        RootRef.child("Users").child("adno").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void RetrieveUserInfo() {
         RootRef.child("Users").child(currentUserID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if((snapshot.exists()) &&(snapshot.hasChild("name"))&&snapshot.hasChild("image"))
+                        if((snapshot.exists()) &&(snapshot.hasChild("name"))&&snapshot.hasChild("role")) //checks if role is teacher
                         {
                             String retrieveuName=snapshot.child("name").getValue().toString();
                             String retrieveuStatus=snapshot.child("class").getValue().toString();
-                            String retrieveuImg=snapshot.child("image").getValue().toString(); //url stored here is wrong
+                           // String retrieveuImg=snapshot.child("image").getValue().toString();
+                            currole=snapshot.child("role").getValue().toString();
 
                             uName.setText(retrieveuName);
                             uStatus.setText(retrieveuStatus);
-                            Picasso.get().load(retrieveuImg).into(uImage);
+                           // Picasso.get().load(retrieveuImg).into(uImage);
 
                         }
                         else if((snapshot.exists()) &&(snapshot.hasChild("name")))
@@ -92,8 +108,11 @@ public class SettingsActivity extends AppCompatActivity
                             String retrieveuName=snapshot.child("name").getValue().toString();
 //                            String retrieveuImg=snapshot.child("image").getValue().toString();
 
-                            uName.setText(retrieveuName);
+                            String retrieveuStatus=snapshot.child("class").getValue().toString();
 
+                            uStatus.setText(retrieveuStatus);
+                            uName.setText(retrieveuName);
+                            currole="student";
                         }
                         else
                         {
@@ -173,6 +192,7 @@ public class SettingsActivity extends AppCompatActivity
     private void UpdateSettings() {
     String setUName=uName.getText().toString();
     String setUStatus=uStatus.getText().toString();
+    String setUrole=currole;
         if (TextUtils.isEmpty(setUName))
         {
             Toast.makeText(this, "Enter UserName", Toast.LENGTH_SHORT).show();
@@ -184,6 +204,7 @@ public class SettingsActivity extends AppCompatActivity
             profileMap.put("uid",currentUserID);
             profileMap.put("name",setUName);
             profileMap.put("class",setUStatus);
+            profileMap.put("role",setUrole);
             RootRef.child("Users").child(currentUserID).setValue(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

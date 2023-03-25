@@ -80,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private DatabaseReference RootRef;
     private ActivityMainBinding binding;
 
-    String adno = "";
+    String sendadno="",name1="",year1="",program1="",adno1="",adno = "";
 
     String dob = "";
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -104,12 +104,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        RegButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateNewAccount();
-            }
-        });
+////        RegButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                CreateNewAccount();
+//            }
+//        });
 
 
 
@@ -235,6 +235,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             continue;
                         }
                         if(i==1){
+                            sendadno=words;
 
                             adno=(words+"@ncas.in");
                             Toast.makeText(this, adno, Toast.LENGTH_SHORT).show();
@@ -281,13 +282,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void CreateNewAccount() {
         String roles ="student";
-        RootRef.child("Students").child(adno).addValueEventListener(new ValueEventListener() {
+        RootRef.child("Students").child(sendadno).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String currentUserID=mAuth.getCurrentUser().getUid();
 
+                name1=snapshot.child("name").getValue().toString();
+                program1=snapshot.child("program").getValue().toString();
+                year1=snapshot.child("year").getValue().toString();
+                adno1=snapshot.child("adno").getValue().toString();
 
-                RootRef.child("Users").child(currentUserID).setValue(roles);
 
             }
 
@@ -315,12 +318,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
                         RootRef.child("Users").child(currentUserID).setValue(roles);
+
+                        RootRef.child("Users").child(currentUserID).child("name").setValue(name1);
+                        RootRef.child("Users").child(currentUserID).child("class").setValue(program1);
+                        RootRef.child("Users").child(currentUserID).child("year").setValue(year1);
+                        RootRef.child("Users").child(currentUserID).child("adno").setValue(adno1);
                         SendUsertoMain();
                         Toast.makeText(RegisterActivity.this, "Registration Success", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         mToast=Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT);
-                        mToast.show();
+                       // mToast.show();
                         if(mToast!=null){
 //                        mToast.cancel();
                         }

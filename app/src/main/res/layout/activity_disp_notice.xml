@@ -46,12 +46,60 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="15dp"
         android:inputType="textPersonName" />
-
-    <CalendarView
-        android:id="@+id/simpleCalendarView"
-        android:layout_width="390dp"
-        android:layout_height="389dp"
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="15dp"
         android:layout_below="@+id/editText2"
-        android:layout_marginTop="17dp" />
+        android:inputType="textPersonName"
+        android:text="Date" />
+
+    <EditText
+        android:id="@+id/dispDate"
+        android:layout_width="217dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="199dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="15dp"
+        android:layout_below="@+id/dispBody"
+        android:inputType="textPersonName" />
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="15dp"
+
+        android:layout_below="@+id/editText3"
+        android:inputType="textPersonName"
+        android:text="Body" />
+
+    <EditText
+        android:id="@+id/dispClass"
+        android:layout_width="217dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="199dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="15dp"
+
+        android:layout_below="@+id/dispDate"
+        android:inputType="textPersonName" />
+    <Button
+        android:id="@+id/downloadFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText4"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:text="Download"></Button>
 
 </RelativeLayout>

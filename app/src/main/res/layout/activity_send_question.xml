@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/questionheading"
+
+        android:layout_below="@+id/toolbar"
+        android:layout_width="217dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/inputs"
+        android:hint="Enter Question"
+        android:inputType="text"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/noticesendMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/questionheading"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="368dp"
+        android:layout_marginEnd="15dp"
+        android:text="Send" />
+
+    <TextView
+        android:id="@+id/classes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:drawable/editbox_background"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:drawablePadding="16dp"
+        android:hint="Select Classes"
+        android:padding="12dp" />
+
+    <!--button to open the material design date picker dialog-->
+
+    <TextView
+        android:id="@+id/show_selected_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pick_date_button"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="128dp"
+        android:layout_marginBottom="-116dp"
+        android:text="Selected Date is : "
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/pick_date_button"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/classes"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="77dp"
+        android:text="Select Date"
+        android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/send_files_btn"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/classes"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="-279dp"
+        android:layout_toEndOf="@+id/textView"
+        android:backgroundTint="@android:color/white"
+        android:src="@drawable/send_files"></ImageButton>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:subtitle="Assign a Question" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/questionheading"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="26dp"
+        android:text="Attach a file (optional)" />
+
+
+</RelativeLayout>

@@ -118,6 +118,9 @@ public class GroupsFragment extends Fragment {
                     retrieveuClass = snapshot.child("class").getValue().toString();
                     RetrieveGroups();
                 }
+                else{
+                    retrieveuClass ="AAA";
+                }
                 }
 
             @Override

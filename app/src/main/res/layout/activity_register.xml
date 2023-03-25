@@ -8,80 +8,28 @@
     <view
         android:id="@+id/previewView"
         class="androidx.camera.view.PreviewView"
-        android:layout_width="250dp"
-        android:layout_height="350dp" />
+        android:layout_width="349dp"
+        android:layout_height="445dp"
+        android:layout_marginStart="50dp" />
     <Button
         android:id="@+id/bCapture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/previewView"
         android:text="Capture"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp" />
-    <EditText
-        android:id="@+id/register_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/bCapture"
-        android:hint="Email"
-        android:padding="5dp"
-        android:inputType="text"
-        android:background="@drawable/inputs"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="15dp"/>
-    <EditText
-        android:id="@+id/register_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/register_email"
-        android:hint="Password"
-        android:padding="5dp"
-        android:inputType="textPassword"
-        android:background="@drawable/inputs"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"/>
-    <EditText
-        android:id="@+id/roles"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/register_password"
-        android:hint="student/teacher"
-        android:padding="5dp"
-        android:inputType="text"
-        android:background="@drawable/inputs"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"/>
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/roles"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:text="Register"></Button>
+
     <TextView
         android:id="@+id/login_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_button"
+        android:layout_below="@+id/bCapture"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:text="Login"></TextView>
-    <Button
-        android:id="@+id/scan_link"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/register_button"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="250dp"
-        android:layout_marginEnd="15dp"
-        android:text="Scan"></Button>
+
 </RelativeLayout>

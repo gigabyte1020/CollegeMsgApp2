@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -38,7 +41,7 @@ public class DispNotice extends AppCompatActivity {
 
     private Toolbar chattoolbar;
     private ImageButton sendMessageButton,sendFileButton;
-    private EditText dispTitle,dispBody;
+    private EditText dispTitle,dispBody,dispDate,dispClass;
     private FirebaseAuth mauth;
     private final List<Messages> messagesList=new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
@@ -46,10 +49,11 @@ public class DispNotice extends AppCompatActivity {
     private RecyclerView usermessagerecyclerview;
 
 
-    private String title,body;
+    private String title,body,retFile;
     private String checker="",myUrl="";
     private StorageTask uploadTask;
     private Uri fileuri;
+    private Button downFile;
 
     private String currentNoticeName,currentUserName,currentUserID,currentDate,currentTime;
     private DatabaseReference RootRef,GroupNameRef,GroupMessageRefKey;
@@ -63,14 +67,21 @@ public class DispNotice extends AppCompatActivity {
         messageSenderId=mauth.getCurrentUser().getUid();
         RootRef= FirebaseDatabase.getInstance().getReference();
 
-        CalendarView simpleCalendarView = (CalendarView) findViewById(R.id.simpleCalendarView);
+//        CalendarView simpleCalendarView = (CalendarView) findViewById(R.id.simpleCalendarView);
         currentNoticeName=getIntent().getExtras().get("noticename").toString(); //currently title+date
         currentUserID=mauth.getCurrentUser().getUid();
         Log.i("title1",currentNoticeName);
-        simpleCalendarView.setDate(1463918226920L);
+//        simpleCalendarView.setDate(1463918226920L);
         Initialize();
         GetNoticeData();
         GetNoticeData2();
+        downFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(retFile));
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -110,10 +121,14 @@ public class DispNotice extends AppCompatActivity {
                             String retrieveBody=snapshot.child("body").getValue().toString();
                             String retrieveDate=snapshot.child("date").getValue().toString();
                             String retrieveClass=snapshot.child("class").getValue().toString();
+                            String retrieveFile=snapshot.child("file").getValue().toString();
                             Log.i("title",retrieveTitle);
+                            retFile=retrieveFile;
 
                             dispTitle.setText(retrieveTitle);
                             dispBody.setText(retrieveBody);
+                            dispDate.setText(retrieveDate);
+                            dispClass.setText(retrieveClass);
 
                         }
                     }
@@ -130,5 +145,8 @@ public class DispNotice extends AppCompatActivity {
     private void Initialize() {
         dispTitle=(EditText) findViewById(R.id.dispTitle);
         dispBody=(EditText) findViewById(R.id.dispBody);
+        dispDate=(EditText) findViewById(R.id.dispDate);
+        dispClass=(EditText) findViewById(R.id.dispClass);
+        downFile=(Button) findViewById(R.id.downloadFile);
     }
 }
