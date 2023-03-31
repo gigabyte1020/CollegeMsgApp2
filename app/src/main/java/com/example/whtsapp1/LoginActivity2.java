@@ -87,7 +87,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
 
     private void SendUsertoMain() {
-        Intent mainIntent=new Intent(LoginActivity2.this,MainActivity.class);
+        Intent mainIntent=new Intent(LoginActivity2.this,MainActivity2.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //Prevents user going back to login/register activity
         startActivity(mainIntent);
         finish();

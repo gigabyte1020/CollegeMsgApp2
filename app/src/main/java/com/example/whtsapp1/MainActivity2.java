@@ -1,10 +1,5 @@
 package com.example.whtsapp1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +7,12 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity {
     private
     androidx.appcompat.widget.Toolbar mToolBar;
     String role="";
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else {
-                //    SendUsertoSettings();
+                   // SendUsertoSettings();
                 }
             }
 
@@ -98,34 +97,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SendUsertoLogin() {
-        Intent loginIntent=new Intent(MainActivity.this,LoginActivity.class);
+        Intent loginIntent=new Intent(MainActivity2.this,LoginActivity.class);
 
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
         finish();
     }
     private void SendUsertoFirst() {
-        Intent loginIntent=new Intent(MainActivity.this,FirstScreen.class);
+        Intent loginIntent=new Intent(MainActivity2.this,FirstScreen.class);
 
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
         finish();
     }
     private void SendUsertoSettings() {
-        Intent settingsIntent=new Intent(MainActivity.this,SettingsActivity.class);
+        Intent settingsIntent=new Intent(MainActivity2.this,SettingsActivity.class);
 
         settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(settingsIntent);
        // finish();
     }
     private void SendUsertoNotice() {
-        Intent noticeIntent=new Intent(MainActivity.this,SendNotice.class);
+        Intent noticeIntent=new Intent(MainActivity2.this,SendNotice.class);
 
        // noticeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(noticeIntent);
     }
     private void SendUsertoQuestion() {
-        Intent noticeIntent=new Intent(MainActivity.this,SendQuestion.class);
+        Intent noticeIntent=new Intent(MainActivity2.this,SendQuestion.class);
 
         noticeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(noticeIntent);
@@ -158,18 +157,12 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-    public boolean onPrepareOptionsMenu (Menu menu) {
 
-            menu.getItem(0).setEnabled(false);
-
-
-        return true;
-    }
 
     private void RequestNewGroup() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity2.this);
         builder.setTitle("Enter Group Name");
-        final EditText NameField = new EditText(MainActivity.this);
+        final EditText NameField = new EditText(MainActivity2.this);
         builder.setView(NameField);
 
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
@@ -178,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 String groupName=NameField.getText().toString();
                 if (TextUtils.isEmpty(groupName))
                 {
-                    Toast.makeText(MainActivity.this, "Enter Group Name...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity2.this, "Enter Group Name...", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     CreateNewGroup(groupName);
@@ -200,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(MainActivity.this, groupName + " is created", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity2.this, groupName + " is created", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

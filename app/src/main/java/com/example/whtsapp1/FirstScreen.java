@@ -28,13 +28,7 @@ public class FirstScreen extends AppCompatActivity {
                 startActivity(logIntent);
             }
         });
-        Reg2Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent logIntent=new Intent(FirstScreen.this,RegisterActivity2.class);
-                startActivity(logIntent);
-            }
-        });
+
         Log2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +41,6 @@ public class FirstScreen extends AppCompatActivity {
     private void InitializeFields() {
         RegButton = (Button) findViewById(R.id.reg_button);
         LogButton = (Button) findViewById(R.id.login_button);
-        Reg2Button = (Button) findViewById(R.id.reg2_button);
         Log2Button = (Button) findViewById(R.id.log2_button);
     }
 }

@@ -286,7 +286,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                name1=snapshot.child("name").getValue().toString();
+                name1=snapshot.child("sname").getValue().toString();
                 program1=snapshot.child("program").getValue().toString();
                 year1=snapshot.child("year").getValue().toString();
                 adno1=snapshot.child("adno").getValue().toString();
